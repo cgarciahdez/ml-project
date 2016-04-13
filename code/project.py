@@ -183,6 +183,70 @@ class Project():
 		x, y = shuffle(x, y, random_state=0)
 		self.x, self.y= x,y
 
+	def GNCC(self,o_,max_iter=100,l_r=0.3,x_,y_original,th=0.01):
+		classes = set(y)
+		y_max=0.9
+		#o=np.random.uniform(0.5,1.0,(len(classes),1))
+		o=o_#Its gonna be len(y)
+		it=0
+		pattern = np.copy(self.x)
+		while it<max_iter:
+			u = defaultdict(float)
+			D = 0
+			for j in range(pattern):
+				t_j=pattern[j]
+				dist_=dist(t_j,x_)
+				#sacar el x actual
+				r_ = (dist_.o)
+				D+=r_
+				for i in classes:
+					d_=d(j,i,y_max)
+					u[i]+=d_*r_
+
+			c = defaultdict
+			for i in classes:
+				c[i]=u[i]/D
+
+			s = sorted(c.items(), key=lambda x: x[1],reverse=True)
+			winner = s[0]
+			e = (y(y_original,winner[0])-winner[1])**2
+			y_max=
+			it+=1
+			if math.abs(math.sqrt(e))<=th: #acceptable error was reached
+				break
+			else:
+				pass#Update smoothing parameter
+			
+
+
+				
+
+
+
+
+
+
+	def dist(t_j,x):
+		return np.sum(x-t_j)**2
+
+	def r(dist_,o_):
+		ret = dist_/(2*o^2)
+		ret = (-1)*ret
+		ret = np.exp(ret)
+
+		return ret
+
+	def y(i,j):
+		return 0.9 if j==i else 0.1
+
+	def d(j,i,y_max):
+		y_ij=y(i,j)
+		ret=y_ij-y_max
+		ret=np.exp(ret)
+		ret = ret * y_ij
+
+		return ret
+
 proj = Project()
 proj.main_menu()
 
