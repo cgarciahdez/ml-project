@@ -183,64 +183,65 @@ class Project():
 		x, y = shuffle(x, y, random_state=0)
 		self.x, self.y= x,y
 
-	def GNCC(self,o_,max_iter=100,l_r=0.3,x_,y_original,th=0.01):
-		classes = set(y)
+
+	def find_o(self):
+		o=np.random.uniform(0.5,1.0,(len(self.y),))
+		for i in range(len(self.y)):
+			o = self.GNCC(o,self.x[i],self.y[i])
+		return o
+
+	def GNCC(self,o_,x_,y_original,max_iter=10,l_r=0.3,th=0.01):
+		classes = set(self.y)
 		y_max=0.9
-		#o=np.random.uniform(0.5,1.0,(len(classes),1))
 		o=o_#Its gonna be len(y)
 		it=0
 		pattern = np.copy(self.x)
 		while it<max_iter:
 			u = defaultdict(float)
 			D = 0
-			for j in range(pattern):
+			for j in range(len(pattern)):
 				t_j=pattern[j]
-				dist_=dist(t_j,x_)
+				dist_=self.dist(t_j,x_)
 				#sacar el x actual
-				r_ = (dist_.o)
+				r_ = self.r(dist_,o[j])
 				D+=r_
 				for i in classes:
-					d_=d(j,i,y_max)
+					d_=self.d(j,i,y_max)
 					u[i]+=d_*r_
 
-			c = defaultdict
+			c = defaultdict(float)
 			for i in classes:
 				c[i]=u[i]/D
+			c=dict(c)
 
-			s = sorted(c.items(), key=lambda x: x[1],reverse=True)
-			winner = s[0]
-			e = (y(y_original,winner[0])-winner[1])**2
-			y_max=
+			sort = sorted(c.items(), key=lambda x: x[1], reverse=True)
+
+			winner = sort[0]
+			e = (self.y_(y_original,winner[0])-winner[1])**2
+			y_max= winner[1] if winner[1]>y_max else y_max
 			it+=1
-			if math.abs(math.sqrt(e))<=th: #acceptable error was reached
+			if abs(math.sqrt(e))<=th: #acceptable error was reached
 				break
 			else:
 				pass#Update smoothing parameter
-			
+		return o
 
 
-				
-
-
-
-
-
-
-	def dist(t_j,x):
+	def dist(self,t_j,x):
 		return np.sum(x-t_j)**2
 
-	def r(dist_,o_):
-		ret = dist_/(2*o^2)
+	def r(self,dist_,o_):
+		ret = dist_/(2*o_**2)
 		ret = (-1)*ret
 		ret = np.exp(ret)
 
 		return ret
 
-	def y(i,j):
+	def y_(self,i,j):
 		return 0.9 if j==i else 0.1
 
-	def d(j,i,y_max):
-		y_ij=y(i,j)
+	def d(self,j,i,y_max):
+		y_ij=self.y_(i,j)
 		ret=y_ij-y_max
 		ret=np.exp(ret)
 		ret = ret * y_ij
@@ -248,5 +249,7 @@ class Project():
 		return ret
 
 proj = Project()
-proj.main_menu()
+#proj.main_menu()
+proj.load_iris()
+print (proj.find_o())
 
