@@ -198,16 +198,18 @@ class Project():
 		pattern = np.copy(self.x)
 		while it<max_iter:
 			u = defaultdict(float)
+			r_ = defaultdict(float)
+			dist_ = defaultdict(float)
 			D = 0
 			for j in range(len(pattern)):
 				t_j=pattern[j]
-				dist_=self.dist(t_j,x_)
+				dist_[j]=self.dist(t_j,x_)
 				#sacar el x actual
-				r_ = self.r(dist_,o[j])
-				D+=r_
+				r_[j] = self.r(dist_[j],o[j])
+				D+=r_[j]
 				for i in classes:
 					d_=self.d(j,i,y_max)
-					u[i]+=d_*r_
+					u[i]+=d_*r_[j]
 
 			c = defaultdict(float)
 			for i in classes:
@@ -223,8 +225,26 @@ class Project():
 			if abs(math.sqrt(e))<=th: #acceptable error was reached
 				break
 			else:
-				pass#Update smoothing parameter
+				o = self.update_o(o,r_,dist_,D,winner,e,y_max,l_r)
 		return o
+
+	def update_o(self,o_old,r_,dist_,D,winner,e,y_max,l_r):
+		sum_b = 0
+		for j in range(len(r_)):
+			sum_b+=self.d(j,winner[0],y_max)*r_[j]*dist_[j]/o_old**3
+		b_id = 2*sum_b
+
+		sum_l = 0
+		for j in range(len(r_)):
+			sum_l+=r_[j]*dist_[j]/o_old**3
+		l_id = 2*sum_l
+
+		cid_o = (b_id-l_id*winner[1])/D
+
+		e_o = 2*math.sqrt(e)*cid_o
+
+		return o_old+l_r*e_o
+
 
 
 	def dist(self,t_j,x):
