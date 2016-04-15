@@ -302,8 +302,7 @@ class Project():
 proj = Project()
 #proj.main_menu()
 proj.load_iris()
-print(len(proj.x))
 o= (proj.find_o())
-print(proj.classify(o,proj.x[76]))
+print(proj.classify(o,proj.x[103]))
 
 
