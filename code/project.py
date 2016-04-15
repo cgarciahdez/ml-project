@@ -204,7 +204,6 @@ class Project():
 			for j in range(len(pattern)):
 				t_j=pattern[j]
 				dist_[j]=self.dist(t_j,x_)
-				#sacar el x actual
 				r_[j] = self.r(dist_[j],o[j])
 				D+=r_[j]
 				for i in classes:
@@ -228,6 +227,7 @@ class Project():
 				o = self.update_o(o,r_,dist_,D,winner,e,y_max,l_r)
 		return o
 
+
 	def update_o(self,o_old,r_,dist_,D,winner,e,y_max,l_r):
 		sum_b = 0
 		for j in range(len(r_)):
@@ -244,6 +244,35 @@ class Project():
 		e_o = 2*math.sqrt(e)*cid_o
 
 		return o_old+l_r*e_o
+
+	def classify(self,o_,x_):
+		classes = set(self.y)
+		y_max=0.9
+		o=o_#Its gonna be len(y)
+		it=0
+		pattern = np.copy(self.x)
+		u = defaultdict(float)
+		r_ = defaultdict(float)
+		dist_ = defaultdict(float)
+		D = 0
+		for j in range(len(pattern)):
+			t_j=pattern[j]
+			dist_[j]=self.dist(t_j,x_)
+			r_[j] = self.r(dist_[j],o[j])
+			D+=r_[j]
+			for i in classes:
+				d_=self.d(j,i,y_max)
+				u[i]+=d_*r_[j]
+
+		c = defaultdict(float)
+		for i in classes:
+			c[i]=u[i]/D
+		c=dict(c)
+
+		sort = sorted(c.items(), key=lambda x: x[1], reverse=True)
+
+		winner = sort[0]
+		return winner[0]
 
 
 
@@ -268,8 +297,13 @@ class Project():
 
 		return ret
 
+
+
 proj = Project()
 #proj.main_menu()
 proj.load_iris()
-print (proj.find_o())
+print(len(proj.x))
+o= (proj.find_o())
+print(proj.classify(o,proj.x[76]))
+
 
