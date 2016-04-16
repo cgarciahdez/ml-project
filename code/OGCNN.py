@@ -5,6 +5,12 @@ from math import log, sqrt
 class OGCNN(object):
 
     def fit(self, x, y):
+    """
+    Fits a One Pass General Classifier Neural Network.
+    Computes the smoothing parameter by getting the
+    mean and standard deviation of the class distributions
+    and performing one of two transformation on this data.
+    """
         self.pattern = np.copy(x)
         self.classes = set(y)
         self.n_feats = x.shape[1]
@@ -72,12 +78,23 @@ class OGCNN(object):
             """
             Vmax and Vmin standard deviations for current class
             Vmax and Vmin are the SDs for the most dispersed
-            and least dispersed classes
+            and least dispersed features
+            ma_ft is the index of the feature
+            corresponding to Vmax
             """
             m_v = mu_sigma[cl]
             M_i = m_v[0]
             V_i = m_v[1]
             Vmax_i, Vmin_i, ma_ft = self.max_min_V(V_i)
+
+            """
+            If the standard deviation is too high,
+            the smoothing parameter is the log of the
+            sum of the difference between the mean
+            and standard deviation.
+            Otherwise, it is the average of the
+            highest and lowest standard deviation
+            """
             if Vmax_i > 1 and (Vmax_i / M_i[ma_ft]) > 0.1:
                 o[cl] = self.above_threshold(V_i, M_i)
             else:
@@ -85,6 +102,9 @@ class OGCNN(object):
 
         return o
 
+    """
+    Same as classify from GCNN.
+    """
     def classify(self, x_test):
         y_max=0.9
         it=0
