@@ -63,25 +63,25 @@ class Project():
 		labels=list(set(self.y))
 		train_e={'p':0,'r':0,'f_m':0,'a':0}
 		test_e={'p':0,'r':0,'f_m':0,'a':0}
-		    
-
+		
 		kf = KFold(len(self.x),k_f)
 		for train, test in kf:
-		    self.classifier.fit(self.x[train],self.y[train])
-		    y_label_train = self.classifier.classify_batch( self.x[train] )
-		    y_label_test = self.classifier.classify_batch( self.x[test] )
-		    train_r = get_results( self.y[train], y_label_train,labels )
-		    test_r = get_results( self.y[test], y_label_test,labels )
+			self.classifier.fit(self.x[train],self.y[train])
+			y_label_train = self.classifier.classify_batch( self.x[train] )
+			y_label_test = self.classifier.classify_batch( self.x[test] )
+			train_r = get_results( self.y[train], y_label_train,labels )
+			test_r = get_results( self.y[test], y_label_test,labels )
 
-		    train_e["p"] += train_r[1]
-		    train_e["r"] += train_r[2]
-		    train_e["f_m"] += (train_r[3])
-		    train_e["a"] += train_r[4]
+			train_e["p"] += train_r[1]
+			train_e["r"] += train_r[2]
+			train_e["f_m"] += (train_r[3])
+			train_e["a"] += train_r[4]
 
-		    test_e["p"] += (test_r[1])
-		    test_e["r"] += (test_r[2])
-		    test_e["f_m"] += (test_r[3])
-		    test_e["a"] += test_r[4]
+			test_e["p"] += (test_r[1])
+			test_e["r"] += (test_r[2])
+			test_e["f_m"] += (test_r[3])
+			test_e["a"] += test_r[4]
+
 
 		for key in train_e:
 			train_e[key]/=k_f
@@ -93,15 +93,20 @@ class Project():
 
 proj = Project()
 #proj.main_menu()
-proj.x, proj.y = load_vehicle()
-proj.classifier.fit(proj.x,proj.y)
+proj.x, proj.y = load_iris()
 # print(proj.classifier.classify(proj.x[137]))
 # print(proj.y[137])
+
+
+
+
 start_time = time.time()
 print(proj.cross_validation())
 print("Time for GCNN was: %f"%(time.time() - start_time))
 
 proj.classifier=OGCNN()
+
+
 start_time = time.time()
 print(proj.cross_validation())
 print("Time for OGCNN was: %f"%(time.time() - start_time))

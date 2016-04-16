@@ -11,7 +11,6 @@ class GCNN(object):
 	def calc_o_step(self, o, x_i, y_i):
 		it = 0
 		y_max = 0.9
-		self.pattern = np.copy(x_i)
 		while it < self.max_iter:
 			u = defaultdict(float)
 			r_ = defaultdict(float)
@@ -63,6 +62,7 @@ class GCNN(object):
 
 	def fit(self, x, y):
 		self.classes = set(y)
+		self.pattern=(np.copy(x))
 		self.y_max=0.9
 		it=0
 		o = np.random.uniform(0.5,1.0,(len(y),))

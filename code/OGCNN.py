@@ -1,9 +1,8 @@
 import numpy as np
 from collections import defaultdict
 from math import log, sqrt
-from GCNN import GCNN
 
-class OGCNN(GCNN):
+class OGCNN(object):
 
     def fit(self, x, y):
         self.pattern = np.copy(x)
@@ -85,6 +84,58 @@ class OGCNN(GCNN):
                 o[cl] = self.below_threshold(Vmax_i, Vmin_i)
 
         return o
+
+    def classify(self, x_test):
+        y_max=0.9
+        it=0
+        u = defaultdict(float)
+        r_ = defaultdict(float)
+        dist_ = defaultdict(float)
+        D = 0
+        for j in range(len(self.pattern)):
+            t_j = self.pattern[j]
+            dist_[j] = self.dist(t_j, x_test)
+            r_[j] = self.r(dist_[j], self.o[j])
+            D += r_[j]
+            for i in self.classes:
+                d_ = self.d(j, i, y_max)
+                u[i] += d_*r_[j]
+
+        c = dict()
+        for i in self.classes:
+            c[i]=u[i]/D
+
+        sort = sorted(c.items(), key=lambda x: x[1], reverse=True)
+
+        winner = sort[0]
+        return winner[0]
+
+    def classify_batch(self,x_test):
+        y_pred=[]
+        for x_ in x_test:
+            y_pred.append(self.classify(x_))
+        return y_pred
+
+    def dist(self,t_j,x):
+        return np.sum(x-t_j)**2
+
+    def r(self, dist_, o_):
+        ret = dist_/(2*o_**2)
+        ret = (-1)*ret
+        ret = np.exp(ret)
+
+        return ret
+
+    def y_(self,i,j):
+        return 0.9 if j==i else 0.1
+
+    def d(self, j, i, y_max):
+        y_ij = self.y_(i,j)
+        ret = y_ij - y_max
+        ret = np.exp(ret)
+        ret = ret * y_ij
+
+        return ret
 
 #X = np.arange(20).reshape(10,2)
 #y = np.array([1,1,1,1,0,0,0,0,0,0])
