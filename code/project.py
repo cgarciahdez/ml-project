@@ -97,5 +97,6 @@ proj.classifier.fit(proj.x,proj.y)
 # print(proj.classifier.classify(proj.x[137]))
 # print(proj.y[137])
 print(proj.cross_validation())
-
+proj.classifier=OGCNN()
+print(proj.cross_validation())
 

@@ -6,6 +6,7 @@ from GCNN import GCNN
 class OGCNN(GCNN):
 
     def fit(self, x, y):
+        self.pattern = np.copy(x)
         self.classes = set(y)
         self.n_feats = x.shape[1]
         mu_sigma = self.compute_mu_sigma(x, y)
