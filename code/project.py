@@ -13,6 +13,7 @@ from data_loaders import load_iris, load_vehicle, load_sonar, \
 			load_imgseg, load_bcw, load_pendig
 from performance import get_results
 from GCNN import GCNN
+from OGCNN import OGCNN
 
 
 class Project():
@@ -71,8 +72,6 @@ class Project():
 		    train_r = get_results( self.y[train], y_label_train,labels )
 		    test_r = get_results( self.y[test], y_label_test,labels )
 
-		    print (train_r)
-
 		    train_e["p"] += train_r[1]
 		    train_e["r"] += train_r[2]
 		    train_e["f_m"] += (train_r[3])
@@ -88,17 +87,6 @@ class Project():
 			test_e[key]/=k_f
 
 
-		# train_e["p"]/=k_f
-		# train_e["r"]/=k_f
-		# train_e["f_m"]/=k_f
-		# train_e["a"]/=k_f
-
-		# test_e["p"]/=k_f
-		# test_e["r"]/=k_f
-		# test_e["f_m"]/=k_f
-		# test_e["a"]/=k_f
-
-
 		return train_e, test_e
 
 
@@ -109,4 +97,5 @@ proj.classifier.fit(proj.x,proj.y)
 # print(proj.classifier.classify(proj.x[137]))
 # print(proj.y[137])
 print(proj.cross_validation())
+
 
