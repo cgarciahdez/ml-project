@@ -1,5 +1,6 @@
 
 import numpy as np
+import time
 import os
 from pylab import *
 import pdb
@@ -92,11 +93,17 @@ class Project():
 
 proj = Project()
 #proj.main_menu()
-proj.x, proj.y = load_iris()
+proj.x, proj.y = load_vehicle()
 proj.classifier.fit(proj.x,proj.y)
 # print(proj.classifier.classify(proj.x[137]))
 # print(proj.y[137])
+start_time = time.time()
 print(proj.cross_validation())
+print("Time for GCNN was: %f"%(time.time() - start_time))
+
 proj.classifier=OGCNN()
+start_time = time.time()
 print(proj.cross_validation())
+print("Time for OGCNN was: %f"%(time.time() - start_time))
+
 
