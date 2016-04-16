@@ -11,14 +11,14 @@ class GCNN(object):
 	def calc_o_step(self, o, x_i, y_i):
 		it = 0
 		y_max = 0.9
-		pattern = np.copy(x_i)
+		self.pattern = np.copy(x_i)
 		while it < self.max_iter:
 			u = defaultdict(float)
 			r_ = defaultdict(float)
 			dist_ = defaultdict(float)
 			D = 0
-			for j in range(len(pattern)):
-				t_j = pattern[j]
+			for j in range(len(self.pattern)):
+				t_j = self.pattern[j]
 				dist_[j] = self.dist(t_j, x_i)
 				r_[j] = self.r(dist_[j], o[j])
 				D += r_[j]
@@ -72,16 +72,15 @@ class GCNN(object):
 
 		self.o = o
 
-	def classify(self, x, x_test):
+	def classify(self, x_test):
 		y_max=0.9
 		it=0
-		pattern = np.copy(x)
 		u = defaultdict(float)
 		r_ = defaultdict(float)
 		dist_ = defaultdict(float)
 		D = 0
-		for j in range(len(pattern)):
-			t_j = pattern[j]
+		for j in range(len(self.pattern)):
+			t_j = self.pattern[j]
 			dist_[j] = self.dist(t_j, x_test)
 			r_[j] = self.r(dist_[j], self.o[j])
 			D += r_[j]
@@ -97,6 +96,12 @@ class GCNN(object):
 
 		winner = sort[0]
 		return winner[0]
+
+	def classify_batch(self,x_test):
+		y_pred=[]
+		for x_ in x_test:
+			y_pred.append(self.classify(x_))
+		return y_pred
 
 	def dist(self,t_j,x):
 		return np.sum(x-t_j)**2

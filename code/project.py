@@ -11,7 +11,9 @@ from collections import defaultdict
 from collections import Counter
 from data_loaders import load_iris, load_vehicle, load_sonar, \
 			load_imgseg, load_bcw, load_pendig
+from performance import get_results
 from GCNN import GCNN
+
 
 class Project():
 
@@ -55,11 +57,56 @@ class Project():
 	def show_help(self):
 		print("This program info info info")
 
+	def cross_validation(self,k_f=10):
+		labels=list(set(self.y))
+		train_e={'p':0,'r':0,'f_m':0,'a':0}
+		test_e={'p':0,'r':0,'f_m':0,'a':0}
+		    
+
+		kf = KFold(len(self.x),k_f)
+		for train, test in kf:
+		    self.classifier.fit(self.x[train],self.y[train])
+		    y_label_train = self.classifier.classify_batch( self.x[train] )
+		    y_label_test = self.classifier.classify_batch( self.x[test] )
+		    train_r = get_results( self.y[train], y_label_train,labels )
+		    test_r = get_results( self.y[test], y_label_test,labels )
+
+		    print (train_r)
+
+		    train_e["p"] += train_r[1]
+		    train_e["r"] += train_r[2]
+		    train_e["f_m"] += (train_r[3])
+		    train_e["a"] += train_r[4]
+
+		    test_e["p"] += (test_r[1])
+		    test_e["r"] += (test_r[2])
+		    test_e["f_m"] += (test_r[3])
+		    test_e["a"] += test_r[4]
+
+		for key in train_e:
+			train_e[key]/=k_f
+			test_e[key]/=k_f
+
+
+		# train_e["p"]/=k_f
+		# train_e["r"]/=k_f
+		# train_e["f_m"]/=k_f
+		# train_e["a"]/=k_f
+
+		# test_e["p"]/=k_f
+		# test_e["r"]/=k_f
+		# test_e["f_m"]/=k_f
+		# test_e["a"]/=k_f
+
+
+		return train_e, test_e
+
 
 proj = Project()
 #proj.main_menu()
 proj.x, proj.y = load_iris()
-print(len(proj.x))
-proj.classifier.fit(proj.x, proj.y)
-for test in range(40,80):
-    print(proj.classifier.classify(proj.x, proj.x[test]))
+proj.classifier.fit(proj.x,proj.y)
+# print(proj.classifier.classify(proj.x[137]))
+# print(proj.y[137])
+print(proj.cross_validation())
+
