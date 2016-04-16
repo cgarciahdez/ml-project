@@ -101,14 +101,29 @@ proj.x, proj.y = load_iris()
 
 
 start_time = time.time()
-print(proj.cross_validation())
-print("Time for GCNN was: %f"%(time.time() - start_time))
+train_e, test_e = proj.cross_validation()
+end_time = time.time()
+
+print("Train scores")
+for k, v in train_e.items():
+	print(k, " : ", v)
+print("Test scores")
+for k, v in test_e.items():
+	print(k, " : ", v)
+	
+print("Time for GCNN was: %f"%(end_time - start_time))
 
 proj.classifier=OGCNN()
 
-
 start_time = time.time()
-print(proj.cross_validation())
-print("Time for OGCNN was: %f"%(time.time() - start_time))
+train_e, test_e = proj.cross_validation()
+end_time = time.time()
 
-
+print("Train scores")
+for k, v in train_e.items():
+	print(k, " : ", v)
+print("Test scores")
+for k, v in test_e.items():
+	print(k, " : ", v)
+	
+print("Time for OGCNN was: %f"%(end_time - start_time))
