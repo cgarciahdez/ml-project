@@ -19,7 +19,6 @@ def my_confusion_matrix(y_true, y_pred, labels = None):
         return
 
     for t, p in zip(y_true, y_pred):
-
         """
         finds which cell to add a point to.
         when i == j the classifier
@@ -42,12 +41,6 @@ def my_precision_recall_f1_acc(conf_mat):
     fps = np.zeros(conf_mat.shape[0])
     fns = np.zeros(conf_mat.shape[0])
 
-    prec_weights = np.zeros(conf_mat.shape[0])
-    reca_weights = np.zeros(conf_mat.shape[0])
-    accu_weights = np.zeros(conf_mat.shape[0])
-
-    num_samples = 0.0
-
     for i in range(conf_mat.shape[0]):
         for j in range(conf_mat.shape[1]):
             if i == j:
@@ -55,10 +48,6 @@ def my_precision_recall_f1_acc(conf_mat):
             else:
                 fns[i] += conf_mat[i][j]
                 fps[j] += conf_mat[i][j]
-            prec_weights[i] += conf_mat[i][j]
-            reca_weights[j] += conf_mat[i][j]
-            
-        num_samples += 1
 
     precisions = np.zeros(conf_mat.shape[0])
     recalls = np.zeros(conf_mat.shape[0])
@@ -94,5 +83,3 @@ def my_precision_recall_f1_acc(conf_mat):
     tot_acc = sum(accuracies) / num_samples
     f1 = 2*tot_prec*tot_reca / (tot_prec + tot_reca)
     return tot_prec, tot_reca, f1, tot_acc
-
-
