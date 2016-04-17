@@ -5,12 +5,12 @@ from math import log, sqrt
 class OGCNN(object):
 
     def fit(self, x, y):
-    """
-    Fits a One Pass General Classifier Neural Network.
-    Computes the smoothing parameter by getting the
-    mean and standard deviation of the class distributions
-    and performing one of two transformation on this data.
-    """
+        """
+        Fits a One Pass General Classifier Neural Network.
+        Computes the smoothing parameter by getting the
+        mean and standard deviation of the class distributions
+        and performing one of two transformation on this data.
+        """
         self.pattern = np.copy(x)
         self.classes = set(y)
         self.n_feats = x.shape[1]
