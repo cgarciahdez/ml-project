@@ -80,6 +80,6 @@ def my_precision_recall_f1_acc(conf_mat):
     """
     tot_prec = sum(precisions) / conf_mat.shape[0]
     tot_reca = sum(recalls) / conf_mat.shape[0]
-    tot_acc = sum(accuracies) / num_samples
+    tot_acc = sum(accuracies) / conf_mat.shape[0]
     f1 = 2*tot_prec*tot_reca / (tot_prec + tot_reca)
     return tot_prec, tot_reca, f1, tot_acc
