@@ -1,0 +1,1 @@
+,Running Time,,Difference (s),Difference (min)Dataset,GCNN,OGCNN,,Iris,97.22,5.73,91.49,1.5248Vehicle,4462.85,170.52,4292.33,71.5388Sonar,162.26,8.01,154.25,2.5708Image Segmentation,230.03,13.73,216.3,3.6050Breast Cancer Winsconsin,2601.94,85.52,2516.42,41.9403

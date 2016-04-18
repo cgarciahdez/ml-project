@@ -1,6 +1,13 @@
 import numpy as np
 from sklearn.utils import shuffle
 
+"""
+This file loads the data from the different data sets offered
+Because every data set has an almost unique format,
+they all have a separate function. They all turn the data
+into numpy matrixes and arrays that are ready to be used
+by the algorithms in the program.
+"""
 def load_iris():
 	file = open("./data/iris.data.txt",'r').readlines()
 	labels={'Iris-setosa':0,'Iris-versicolor':1,'Iris-virginica':2}
@@ -97,7 +104,7 @@ def load_bcw():
 			for i in range(1,len(l)-1):
 				if l[i] is '?':
 					l[i]='1'	#Possible change. Missing value replaced by 1, avg could be better choice.
-					xi.append(float(l[i]))
+				xi.append(float(l[i]))
 			yi=labels[l[len(l)-1]]
 			y.append(yi)
 			x.append(xi)
@@ -118,9 +125,7 @@ def load_pendig():
 			if(len(l)>1):
 				xi=[]
 				for i in range(0,len(l)-1):
-					if(l[i] is '?'):
-						l[i]='1'	#Possible change. Missing value replaced by 1, avg could be better choice.
-						xi.append(int(l[i]))
+					xi.append(int(l[i]))
 				yi=int(l[len(l)-1])
 				y.append(yi)
 				x.append(xi)

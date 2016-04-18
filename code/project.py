@@ -29,8 +29,12 @@ class Project():
 	def main_menu(self):
 		while(True):
 			print("-----------------------------------------------------")
-			print("Welcome to our program\n"
-				"Please be aware that should you need help at any point, you need only type h and hit enter")
+			print("Welcome to the One Pass Generalized Neural Network Program\n"
+				"Here, you can compare the performance and time requirements of\n"
+				"both the traditional Generalized Neural Network and our proposed\n"
+				"improvement, the One Pass Generalized Neural Network, in different datasets.\n"
+				"Please be aware that should you need help at any point, you need only type h"
+				"and hit enter. You can also find a README with the same information in the folder.")
 			print("To continue, please select an action:")
 			print("1. Load a dataset")
 			print("2. Run GCNN on dataset")
@@ -133,7 +137,34 @@ class Project():
 		return
 
 	def see_static(self):
-		print("resultados")
+		print("""
+|                          | Running Time(s)      | Difference (s) | Difference (min) |
+|--------------------------|----------------------|----------------|------------------|
+| Dataset                  | GCNN      |   OGCNN  |                |                  |
+| Iris                     | 97.22     |   5.73   | 91.49          | 1.5248           |
+| Vehicle                  | 4462.85   |   170.52 | 4292.33        | 71.5388          |
+| Sonar                    | 162.26    |   8.01   | 154.25         | 2.5708           |
+| Image Segmentation       | 230.03    |   13.73  | 216.3          | 3.6050           |
+| Breast Cancer Winsconsin | 2601.94   |   85.52  | 2516.42        | 41.9403          |
+
+| TRAINING PERFORMANNCE    |     Accuracy      |     F-Measure      |
+|--------------------------|-------------------|--------------------|
+| Dataset                  | GCNN     | OGCNN  | GCNN      | OGCNN  |
+| Iris                     | 0.2874   | 0.3274 | 0.26      | 0.3533 |
+| Vehicle                  | 0.2269   | 0.2175 | 0.1961    | 0.1852 |
+| Sonar                    | 0.5145   | 0.4952 | 0.4723    | 0.5039 |
+| Image Segmentation       | 0.1434   | 0.1286 | 0.1435    | 0.1474 |
+| Breast Cancer Winsconsin | 0.5474   | 0.4883 | 0.5161    | 0.3483 |
+
+| TESTING PERFORMANNCE     |     Accuracy      |     F-Measure      |
+|--------------------------|-------------------|--------------------|
+| Dataset                  | GCNN     | OGCNN  | GCNN      | OGCNN  |
+| Iris                     | 0.26     | 0.353  | 0.3589    | 0.382  |
+| Vehicle                  | 0.2269   | 0.2186 | 0.2929    | 0.2316 |
+| Sonar                    | 0.509    | 0.5238 | 0.578     | 0.5377 |
+| Image Segmentation       | 0.1619   | 0.1429 | 0.2445    | 0.1828 |
+| Breast Cancer Winsconsin | 0.5638   | 0.4937 | 0.5189    | 0.3506 |
+						""")
 		var = input("Press enter to return")
 		return
 		
@@ -153,7 +184,7 @@ class Project():
 			print("3. Sonar")
 			print("4. Image Segmentation")
 			print("5. Breast Cancer Wisconsin")
-			print("6. Pen-digits")
+			print("6. Go back")
 
 			var = input("Input number selection:")
 			if var is 'h':
@@ -169,7 +200,9 @@ class Project():
 			elif var is '5':
 				self.x, self.y = load_bcw()
 			elif var is '6':
-				self.x, self.y = load_pendig()
+				break
+			else:
+				print("Please choose a valid number.")
 
 			print("Data has been loaded succesfully.")
 			c = input("Press 1 to choose a different data set or any other key to go back: ")
@@ -197,33 +230,39 @@ class Project():
 				l_r = input("Choose the new learning rate: ")
 				try:
 					l_r = float(l_r)
+					if l_r<0:
+						float("a")
 					self.gcnn.l_r=l_r
 					print("Value succesfully changed")
 					
 				except ValueError:
-					print("Please choose a real number")
+					print("Please choose a positive real number")
 					
 			elif var is '2':
 				print("The acceptable error gives the minimum error that needs to be achived to stop iterating the gradien descent.")
 				th = input("Choose the new acceptable error: ")
 				try:
 					th = float(th)
+					if th<0:
+						float("a")
 					self.gcnn.th=th
 					print("Value succesfully changed")
 					
 				except ValueError:
-					print("Please choose a real number")
+					print("Please choose a positive real number")
 					
 			elif var is '3':
 				print("The maximum iteration number dictates the maximum number of times that the gradient descent will iterate (for every example) before stopping.")
 				m_i = input("Choose the new number of maximum iterations rate: ")
 				try:
-					m_i = float(m_i)
+					m_i = int(m_i)
+					if l_r<0:
+						float("a")
 					self.gcnn.max_iter=m_i
 					print("Value succesfully changed")
 					
 				except ValueError:
-					print("Please choose a real number")
+					print("Please choose a positive integer")
 					
 			elif var is '4':
 				break
@@ -235,7 +274,24 @@ class Project():
 
 
 	def show_help(self):
-		print("This program info info info")
+		print("""
+Before attempting to run either algorithm, it's necessary that you choose one of the
+datasets to load it. To do so, please choose the load a dataset option in the main menu and 
+choose whichever dataset you want. To see the results gotten from this datasets before
+choosing one, please go to the static results section, where you will be able to see the
+time they took and their performance. It is recommended that you do this so as not to 
+run one of the long lasting algorithms by accident. If you do, and want to force end the 
+program, you will have to press ctr+c.
+
+You also have the option to change the inputs for the GNCC algorithm. Please be aware
+that changing them drastically might make the program run for a much longer time. We 
+do not recommend choosing a very small step, a very big number of maximum iterations, or 
+a very small acceptable error.
+
+Finally, you have the option to run the algorithms separately or both of them to copare.
+Be aware that the GNCC algorith takes a longer time than the OGCNN. To see the times
+gotten during the making of the report, please refer to the static results.
+			""")
 		var = input("Pres enter to return")
 		return
 

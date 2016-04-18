@@ -7,7 +7,13 @@ class GCNN(object):
 		self.max_iter = max_iter
 		self.l_r = l_r
 		self.th = th
-
+"""
+This function calculates each step of the gradient descent, taking the function through
+each of the network's layers and producing an update for the o in the end. The rest of the
+functions in this file serve mainly to do this steps, with the exception of the classify
+functions, which serve to classify a particular input, and the fit function, which is in charge
+of iterating over every training data.
+"""
 	def calc_o_step(self, o, x_i, y_i):
 		it = 0
 		y_max = 0.9
@@ -60,7 +66,10 @@ class GCNN(object):
 
 		return o_old + self.l_r*e_o
 
-
+"""
+This function trains the neural network to the data it gets as a parameter.
+It calculates the aproppiate o and defines the network's pattern layer.
+"""
 	def fit(self, x, y):
 		self.classes = set(y)
 		self.pattern=(np.copy(x))
@@ -72,7 +81,10 @@ class GCNN(object):
 			o = self.calc_o_step(o, x[i], y[i])
 
 		self.o = o
-
+"""
+This function classifies one example according to its features and
+the previously trained smoothing parameter.
+"""
 	def classify(self, x_test):
 		y_max=0.9
 		it=0
@@ -98,6 +110,9 @@ class GCNN(object):
 		winner = sort[0]
 		return winner[0]
 
+"""
+This function classifies multiple examples.
+"""
 	def classify_batch(self,x_test):
 		y_pred=[]
 		for x_ in x_test:
