@@ -12,6 +12,7 @@ class GCNN(object):
 		it = 0
 		y_max = 0.9
 		while it < self.max_iter:
+			print(it)
 			u = defaultdict(float)
 			r_ = defaultdict(float)
 			dist_ = defaultdict(float)

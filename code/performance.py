@@ -40,7 +40,7 @@ def my_precision_recall_f1_acc(conf_mat):
 
     precisions = np.zeros(conf_mat.shape[0])
     recalls = np.zeros(conf_mat.shape[0])
-    accuracies = np.zeros(conf_mat.shape[0])
+    accuracy = 0
     for i in range(conf_mat.shape[0]):
         tot = tps[i] + fps[i]
         if tot != 0:
@@ -55,14 +55,11 @@ def my_precision_recall_f1_acc(conf_mat):
             recalls[i] = 1.0
 
         tot = tps[i] + fns[i] + fps[i]
-        if tot != 0:
-            accuracies[i] = tps[i] / tot
-        else:
-            accuracies[i] = 1.0
+    
 
     tot_prec = sum(precisions) / conf_mat.shape[0]
     tot_reca = sum(recalls) / conf_mat.shape[0]
-    tot_acc = sum(accuracies) / conf_mat.shape[0]
+    tot_acc = sum(tps) / conf_mat.sum()
     f1 = 2*tot_prec*tot_reca / (tot_prec + tot_reca)
     return tot_prec, tot_reca, f1, tot_acc
 
